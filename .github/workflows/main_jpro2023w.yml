@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
@@ -23,6 +23,14 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
+      - name: Print Current Tools vestions
+        run: |
+          java --version
+          mvn --version
+
+      - name: check for output
+        run: ls -la ${{ github.workspace }}/azure-javaweb-app
+        
       - name: Build with Maven
         working-directory: ./azure-javaweb-app
         run: mvn clean package
