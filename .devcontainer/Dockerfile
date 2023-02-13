@@ -5,12 +5,12 @@ FROM ${IMAGE}:${TAG}
 
 ARG JDK_URL="https://aka.ms/download-jdk/microsoft-jdk-17-linux-ARCH.tar.gz"
 ARG TOMCAT_URL="https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.8/bin/apache-tomcat-9.0.8.tar.gz "
-ARG MAVEN_URL="https://dlcdn.apache.org/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz"
+ARG MAVEN_URL="https://dlcdn.apache.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz"
 
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get -qq update && \
 #    apt-get -qq upgrade && \
-    apt-get -qq install --no-install-recommends tzdata ca-certificates fontconfig locales apt-transport-https curl wget binutils && \
+    apt-get -qq install --no-install-recommends ca-certificates fontconfig locales apt-transport-https curl wget git binutils && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8
 
@@ -52,10 +52,14 @@ EXPOSE 8009
 # Get Maven
 RUN curl --silent -L ${MAVEN_URL} -o /tmp/maven.tgz && \
     tar xzvf /tmp/maven.tgz -C /opt && \
-    mv /opt/apache-maven-3.9.0 /opt/maven && \
+    mv /opt/apache-maven-3.8.7 /opt/maven && \
     rm /tmp/maven.tgz
 
 ENV M2_HOME /opt/maven
 ENV PATH $PATH:$M2_HOME/bin
+
+# Install Azure CLI
+# used to authentcate the Azure App Service using Maven plug-in
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 ENTRYPOINT [ "/opt/tomcat/bin/catalina.sh", "start" ]
