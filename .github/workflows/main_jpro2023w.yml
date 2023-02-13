@@ -27,6 +27,7 @@ jobs:
         run: |
           java --version
           mvn --version
+          cd ${{ github.workspace }}/azure-javaweb-app
           mvn help:effective-pom
 
       - name: check for output
