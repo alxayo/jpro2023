@@ -19,12 +19,17 @@ jobs:
       - name: Set up Java version
         uses: actions/setup-java@v1
         with:
+          distribution: 'microsoft'
           java-version: '17'
+          cache: 'maven'
 
       - name: Build with Maven
         working-directory: ./azure-javaweb-app
-        run: mvn clean install
+        run: mvn clean package
 
+      - name: check for output
+        run: ls -la ${{ github.workspace }}/azure-javaweb-app
+        
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
