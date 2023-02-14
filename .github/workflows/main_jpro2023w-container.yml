@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: jpro2023w.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_9b64fba5b8794d84be8a7914c75cef3b }}/java-container-app:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./Dockerfile-java-app
 
   deploy:
     runs-on: ubuntu-latest
